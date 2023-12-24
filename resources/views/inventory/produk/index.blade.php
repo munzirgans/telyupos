@@ -14,18 +14,7 @@
             <p class="card-category">List of products </p>
         </div>
         <div class="row justify-content-between">
-            <h5 style="margin-top:15px;margin-left:25px;margin-top:16px;margin-bottom:0px;">Category :
             <div class="btn-group" style="margin-left:10px;" id="category">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All
-                </button>
-                <div class="dropdown-menu">
-                    <a href="#"class="dropdown-item">All</a>
-                    <div class="dropdown-divider"></div>
-                    @foreach($category as $c)
-                        <a class="dropdown-item" href="#">{{$c->name}}</a>
-                    @endforeach
-                </div>
             </div>
             </h5>
             <div class="justify-content-end" style="margin-top:25px;margin-right:20px;">
@@ -51,13 +40,9 @@
                 <th>
                     Product Name
                 </th>
-                <th>Category</th>
                 <th>Stock</th>
-                <th>Curr</th>
                 <th>Purchase Price</th>
                 <th>Selling Price</th>
-                <th>Discount</th>
-                <th>Unit</th>
                 <th>Actions</th>
                 </thead>
                 <tbody id="table-val">
@@ -66,13 +51,9 @@
                         <td>{{$p->id}}</td>
                         <td>{{$p->barcode}}</td>
                         <td>{{$p->name}}</td>
-                        <td>{{$p->category}}</td>
                         <td>{{$p->stock}}</td>
-                        <td>{{$p->curr}}</td>
                         <td>{{$p->purchase_price}}</td>
                         <td>{{$p->selling_price}}</td>
-                        <td>{{$p->discount}}</td>
-                        <td>{{$p->unit}}</td>
                         <td style="display:block;width:100px">
                             <a href="{{route('inventory.product.stock.add',$p->id)}}" style="color:#49a54d;"><i class="material-icons">add</i></a>
                             <a href="{{route('inventory.product.edit',$p->id)}}"><i class="material-icons" style="font-size:20px">edit</i></a>

@@ -27,35 +27,9 @@
                 </div>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-group">
-                        <label class="bmd-label-floating" style="display:block;">Category</label>
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{$category[0]->name}}
-                        </button>
-                        <div class="dropdown-menu">
-                            @foreach($category as $c)
-                                <a class="dropdown-item category" href="#">{{$c->name}}</a>
-                            @endforeach
-                        </div>
-                        <input type="hidden" class="form-control" name="category">
-                    </div>
-                </div>
-                <div class="col-md-2">
                 <div class="form-group">
                     <label class="bmd-label-floating">Stock</label>
                     <input type="text" class="form-control" name="stock">
-                </div>
-                </div>
-                <div class="col-md-2">
-                <div class="form-group">
-                    <label class="bmd-label-floating" style="display:block;">Currency</label>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$currency[0]->name}}</button>
-                    <div class="dropdown-menu">
-                        @foreach($currency as $c)
-                            <a class="dropdown-item curr" href="#">{{$c->name}}</a>
-                        @endforeach
-                    </div>
-                    <input type="hidden" class="form-control" name="curr">
                 </div>
                 </div>
                 <div class="col-md-3">
@@ -67,36 +41,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Selling Price</label>
-                        <div>
-                            <input class="form-control selling" type="text" style="display:inline;width:200px;padding-left:10px;" name="selling" readonly>
-                            <button type="button" class="btn btn-primary dropdown-toggle selling-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$profit[0]->name."%"}}</button>
-                            <div class="dropdown-menu">
-                                @foreach($profit as $p)
-                                    <a class="dropdown-item" href="#">{{$p->name.'%'}}</a>
-                                @endforeach
-                            </div>
-                        </div>
+                        <input type="number" class="form-control selling" name="selling" style="margin-top:7px;">
                     </div>
-                </div>
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label class="bmd-label-floating">Discount</label>
-                    <input type="number" class="form-control" name="discount" style="margin-top:7px;">
-                </div>
-                </div>
-                <div class="col-md-2">
-                <div class="form-group">
-                    <label class="bmd-label-floating" style="display:block;">Unit</label>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{$unit[0]->name}}
-                    </button>
-                    <div class="dropdown-menu">
-                        @foreach($unit as $u)
-                            <a class="dropdown-item unit" href="#">{{$u->name}}</a>
-                        @endforeach
-                    </div>
-                    <input type="hidden" class="form-control" name="unit">
-                </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary pull-right">Add Product</button>

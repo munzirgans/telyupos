@@ -35,9 +35,6 @@
                     <td class="card-description">{{$store->address}}</td>
                 </tr>
             </table>
-            <!-- <p class="card-description">
-            Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-            </p> -->
             <a href="{{route('store.edit')}}" class="btn btn-primary btn-round" style="margin-bottom:10px;">Edit</a>
         </div>
         </div>

@@ -94,7 +94,7 @@
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="white" data-image="img/sidebar-tablet.jpg">
                 <div class="logo"><a href="#" class="simple-text logo-normal">
-                    POS SMKN 10 Jakarta
+                    TEL-U POS
                 </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
@@ -133,7 +133,7 @@
                                         <i class="material-icons">inbox</i>
                                         <p>Master Produk</p>
                                     </a>
-                                    <a class="nav-link inventory dualsubside" data-toggle="collapse" href="#collapseMasterConfig" aria-expanded="false" role="button" aria-controls="collapseMasterConfig">
+                                    <!-- <a class="nav-link inventory dualsubside" data-toggle="collapse" href="#collapseMasterConfig" aria-expanded="false" role="button" aria-controls="collapseMasterConfig">
                                         <i class="material-icons">settings</i>
                                         <p>Master Konfigurasi</p>
                                     </a>
@@ -164,7 +164,7 @@
                                                 <p>ingredient</p>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     </a>
                                     <a href="{{route('inventory.income-item.index')}}" class="nav-link @yield('income')">
                                         <i class="material-icons">redo</i>
@@ -233,28 +233,6 @@
         <div class="content">
             @yield('konten')
         </div>
-        <footer class="footer">
-        <div class="container-fluid">
-          <nav class="float-left">
-            <ul>
-              <li>
-                <a href="https://wa.me/6281220304127" style="margin-left:20px;">
-                    <i class="fa fa-whatsapp" style="font-size:20px;"></i>
-                </a>
-              </li>
-              <li>
-                <a href="https://instagram.com/munzirmussafi" style="margin-left:-10px;">
-                    <i class="fa fa-instagram" style="font-size:20px;"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright float-right">
-            Copyright &copy; 2020 by
-            <a href="https://instagram.com/munzirmussafi" target="_blank">Muhammad Munzir</a>. All right reserved
-          </div>
-        </div>
-      </footer>
     </body>
     <script src="{{asset('js/core/jquery.min.js')}}"></script>
     <script src="{{asset('js/core/popper.min.js')}}"></script>
@@ -280,12 +258,8 @@
                             $(this).children("i").css("color", "white");
                             this.style.backgroundColor = "#00bcd4";
                         }
-                        // else if($('inventory.dualsubside')){
-                        //     $(this).css('color',"rgb(255, 152, 0)");
-                        //     $(this).children('i').css('color',"rgb(255, 152, 0)");
-                        // }
-                    }else{
-                        var attr = $(this).attr('data-toggle');
+                    }else{  
+                        var attr = $(this).attr('datatoggle-');
                         if (typeof attr != typeof undefined && attr != false){
                             if ($(this).parent().attr('class').split(' ')[1] != "inventory" || $(this).parent().attr('class').split(' ')[1] == "inventory"){
                                 if($(this).parent().attr('class').split(' ')[2] != "aktif"){

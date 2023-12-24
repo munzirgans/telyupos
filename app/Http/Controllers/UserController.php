@@ -5,25 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Users;
 use Illuminate\Support\Facades\Session;
+use GuzzleHttp\Client;
+
 
 class UserController extends Controller
 {
     public function index(){
-        $users = Users::all();
-        return view('master/user/index', ['users' => $users]);
+        $client = new Client();
+        $url = env("API_URL")."/users";
+        $responseData = json_decode($client->get($url)->getBody()->getContents());
+        return view('master/user/index', ['users' => collect($responseData)]);
     }
     public function add(){
         return view('master/user/add');
     }
 
     public function store(Request $req){
-        Users::create([
-            'name' => $req->input('name'),
-            'email' => $req->input('email'),
-            'password' => $req->input('password'),
-            'address' => $req->input('address'),
+        $client = new Client();
+        $url = env("API_URL")."/users";
+        $data = [
+            'name' => $req->input("name"),
+            'email' => $req->input("email"),
+            'password' => $req->input("password"),
+            'address' => $req->input("address"),
             'phone' => $req->input('phone'),
             'level' => $req->input('level')
+        ];
+        $client->post($url, [
+            'json' => $data
         ]);
         return redirect()->route('user.index');
     }
@@ -45,21 +54,27 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
     public function delete($id){
-        $users = Users::find($id);
-        $users->delete();
+        $client = new Client();
+        $url = env("API_URL")."/users/".$id;
+        $client->delete($url);
         return redirect()->route('user.index');
     }
     public function signin(Request $req){
-        $user = Users::where("email" , $req->input('email'))->first();
-        $this->validate($req,[
-            'email' => 'required|email',
-            'password' => 'required|min:8|max:16'
-        ]);
-        if ($req->password == $user->password){
-            Session::put('user',$user);
+        $client = new Client();
+        $url = "http://localhost:8080/api/login";
+        $data = [
+            'email' => $req->email,
+            'password' => $req->password,
+        ];
+
+        try{
+            $response = $client->post($url, [
+                'json' => $data,
+            ]);
+            Session::put("user", json_decode($response->getBody()));
             return redirect("/dashboard");
-        } else {
-            return view('signin')->with("msg", "Invalid username or password");
+        }catch(\Exception $e){
+            return view('signin')->with("msg", "Invalid username or password!");
         }
     }
 }

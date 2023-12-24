@@ -10,13 +10,16 @@ use App\ConfigUnit;
 use App\ConfigCurrency;
 use App\ConfigProfit;
 use App\IncomeItemReport;
+use GuzzleHttp\Client;
+
 
 class InventoryController extends Controller
 {
     public function index(){
-        $product = Product::all();
-        $category = ConfigCategory::all();
-        return view("inventory/produk/index",["product"=> $product,"category"=>$category]);
+        $client = new Client();
+        $url = env("API_URL")."/products";
+        $responseData = json_decode($client->get($url)->getBody()->getContents());
+        return view("inventory/produk/index",["product"=> collect($responseData)]);
     }
     public function add(){
         $category = ConfigCategory::all();
@@ -26,50 +29,43 @@ class InventoryController extends Controller
         return view("inventory/produk/add",["category"=>$category,"unit"=>$unit,"currency"=>$currency,"profit"=>$profit]);
     }
     public function store(Request $req){
-        Product::create([
+        $client = new Client();
+        $url = env('API_URL')."/products";
+        $data = [
             'barcode' => $req->input('barcode'),
             'name' => $req->input('name'),
-            'category' => $req->input('category'),
             'stock' => $req->input('stock'),
-            'curr' => $req->input('curr'),
             'purchase_price' => $req->input('purchase'),
             'selling_price'=> $req->input('selling'),
-            'discount' => $req->input("discount"),
-            'unit' => $req->input('unit'),
+        ];
+        $client->post($url, [
+            'json' => $data
         ]);
-        IncomeItemReport::create([
-            "barcode" => $req->input("barcode"),
-            "name" => $req->input("name"),
-            "quantity" => $req->input("stock"),
-            "datetime" => Carbon::now()->format("Y-m-d H:i:s"),
-            "via" => "Penambahan Produk Baru"
-        ]);
+        // IncomeItemReport::create([
+        //     "barcode" => $req->input("barcode"),
+        //     "name" => $req->input("name"),
+        //     "quantity" => $req->input("stock"),
+        //     "datetime" => Carbon::now()->format("Y-m-d H:i:s"),
+        //     "via" => "Penambahan Produk Baru"
+        // ]);
         return redirect()->route('inventory.product.index');
     }
     public function edit($id){
-        $product = Product::find($id);
-        $category = ConfigCategory::all();
-        $unit = ConfigUnit::all();
-        $currency = ConfigCurrency::all();
-        $profit = ConfigProfit::all();
-        return view('inventory/produk/edit',["product"=>$product,"category"=>$category,"unit"=>$unit,"currency"=>$currency,"profit"=>$profit]);
+        $client = new Client();
+        $url = env("API_URL")."/products/".$id;
+        $responseData = json_decode($client->get($url)->getBody()->getContents());
+        return view('inventory/produk/edit',["product"=>$responseData]);
     }
     public function delete($id){
-        $product = Product::find($id);
-        $product->delete();
+        $client = new Client();
+        $url = env("API_URL")."/products/".$id;
+        $client->delete($url);
         return redirect()->route('inventory.product.index');
     }
     public function update(Request $req, $id){
-        $product = Product::find($id);
-        $product->barcode = $req->input('barcode');
-        $product->name = $req->input('name');
-        $product->category = $req->input('category');
-        $product->stock = $req->input('stock');
-        $product->curr = $req->input('curr');
-        $product->purchase_price = $req->input('purchase');
-        $product->selling_price = $req->input('selling');
-        $product->unit = $req->input('unit');
-        $product->save();
+        $client = new Client();
+        $url = env("API_URL")."/products/".$id;
+        $client->put($url, ['json' => $req->all()]);
         return redirect()->route('inventory.product.index');
     }
     public function data(Request $req){
@@ -81,20 +77,26 @@ class InventoryController extends Controller
         return response()->json($product);
     }
     public function addstock($id){
-        $product = Product::find($id);
-        return view('inventory/produk/addstock')->with("product",$product);
+        $client = new Client();
+        $url = env("API_URL")."/products/".$id;
+        $response = json_decode($client->get($url)->getBody());
+        return view('inventory/produk/addstock')->with("product",$response);
     }
     public function updatestock(Request $req, $id){
-        $product = Product::find($id);
-        $product->stock = $product->stock + $req->input('stock');
-        $product->save();
-        IncomeItemReport::create([
-            "barcode" => $product->barcode,
-            "name" => $product->name,
-            "quantity" => $req->input('stock'),
-            "datetime" => Carbon::now()->format("Y-m-d H:i:s"),
-            "via" => "Penambahan Stock"
-        ]);
+        $client = new Client();
+        $url = env("API_URL")."/products/stock/$id";
+        $client->put($url,['json' => $req->all()]);
+
+        // $product = Product::find($id);
+        // $product->stock = $product->stock + $req->input('stock');
+        // $product->save();
+        // IncomeItemReport::create([
+        //     "barcode" => $product->barcode,
+        //     "name" => $product->name,
+        //     "quantity" => $req->input('stock'),
+        //     "datetime" => Carbon::now()->format("Y-m-d H:i:s"),
+        //     "via" => "Penambahan Stock"
+        // ]);
         return redirect()->route("inventory.product.index");
     }
     public function barcodedata(Request $req){

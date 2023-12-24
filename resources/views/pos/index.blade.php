@@ -32,7 +32,7 @@
     <div style="margin-left:10px;margin-right:10px;">
         <div class="card card-plain">
             <div class="card-header card-header-success">
-                <h4 class="card-title mt-0">Point of Sale SMKN 10 Jakarta</h4>
+                <h4 class="card-title mt-0">Point of Sale TEL-U</h4>
                 <p class="card-category">Point of Sale (POS)</p>
             </div>
             <div class="row">

@@ -29,7 +29,7 @@
         <section class="sign-in">
             <div class="container">
                 <div class="judul">
-                    <h1>POS SMKN 10 Jakarta</h1>
+                    <h1>TEL-U POS</h1>
                 </div>
                 <div class="signin-content">
                     <div class="signin-image">
