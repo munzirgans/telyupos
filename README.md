@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Apa itu Point of Sale ?
 Point of sale adalah waktu dan tempat penyelesaian transaksi ritel. Pada titik penjualan, pedagang menghitung jumlah yang terutang oleh pelanggan, menunjukkan jumlah tersebut, dapat menyiapkan faktur untuk pelanggan, dan menunjukkan opsi bagi pelanggan untuk melakukan pembayaran (Wikipedia). Pada repository kali ini, saya membuat Point of Sale dengan menggunakan Framework PHP yaitu Laravel.
 
@@ -19,3 +20,6 @@ Point of sale adalah waktu dan tempat penyelesaian transaksi ritel. Pada titik p
 Jika ada yang perlu ditanyakan. Anda dapat menghubungi kontak dibawah ini.
 - [Whatsapp - Munzir](https://wa.me/6281220304127)
 - [Instagram - Munzir](https://instagram.com/munzirmussafi)
+=======
+# telyupos
+>>>>>>> 8b576f187ab4f3b34982616858b9ca806dcd8bec
