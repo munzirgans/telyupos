@@ -183,12 +183,6 @@
                                 <p style="text-transform:none">Point of Sale</p>
                             </a>
                         </li>
-                        <li class="nav-item report @yield('report')">
-                            <a href="{{route('report.index')}}" class="nav-link">
-                                <i class="material-icons">description</i>
-                                <p>Laporan</p>
-                            </a>
-                        </li>
                     </ul>
             </div>
         </div>

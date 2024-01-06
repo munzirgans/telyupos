@@ -86,22 +86,14 @@ class InventoryController extends Controller
         $client = new Client();
         $url = env("API_URL")."/products/stock/$id";
         $client->put($url,['json' => $req->all()]);
-
-        // $product = Product::find($id);
-        // $product->stock = $product->stock + $req->input('stock');
-        // $product->save();
-        // IncomeItemReport::create([
-        //     "barcode" => $product->barcode,
-        //     "name" => $product->name,
-        //     "quantity" => $req->input('stock'),
-        //     "datetime" => Carbon::now()->format("Y-m-d H:i:s"),
-        //     "via" => "Penambahan Stock"
-        // ]);
         return redirect()->route("inventory.product.index");
     }
     public function barcodedata(Request $req){
-        $product = Product::where("barcode",$req->barcode)->get();
-        return response()->json($product);
+        $client = new Client();
+        $url = env("API_URL")."/products/barcode";
+        $response = json_decode($client->post($url,['json' => $req->all()])->getBody()->getContents());
+        // $product = Product::where("barcode",$req->barcode)->get();
+        return response()->json($response);
     }
     public function searchdata(Request $req){
         $product = Product::where('name', 'like', '%'.$req->name)

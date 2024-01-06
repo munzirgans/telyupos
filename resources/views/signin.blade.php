@@ -33,7 +33,7 @@
                 </div>
                 <div class="signin-content">
                     <div class="signin-image">
-                        <figure><img src="img/logo-smk10.jpeg" alt="sing up image"></figure>
+                        <figure><img src="img/telyu.png" alt="sing up image"></figure>
                     </div>
                     <div class="signin-form">
                         <h2 class="form-title" style="font-size:25px;margin-bottom:;" >Sign In</h2>

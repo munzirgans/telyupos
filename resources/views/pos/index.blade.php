@@ -82,7 +82,6 @@
                                                         <th>Product Name</th>
                                                         <th>Price</th>
                                                         <th>Stock</th>
-                                                        <th>Unit</th>
                                                         <th>Actions</th>
                                                     </thead>
                                                     <tbody>
@@ -91,9 +90,8 @@
                                                             <td>{{$loop->iteration}}</td>
                                                             <td>{{$p->barcode}}</td>
                                                             <td>{{$p->name}}</td>
-                                                            <td style="text-align:right;">{{$p->selling_price.' '.$p->curr}}</td>
+                                                            <td style="text-align:right;">{{$p->selling_price}}</td>
                                                             <td>{{$p->stock}}</td>
-                                                            <td>{{$p->unit}}</td>
                                                             <td>
                                                                 <button  type="button" class="btn btn-info selectProduct" data-dismiss="modal" style="width:80px;height:30px;padding-left:5px;">
                                                                     <p style="margin-top:-5px;"><i class="material-icons">check</i> Select</p>
@@ -124,7 +122,6 @@
                         <div style="margin:15px;">
                             <h4 style="font-weight:bold;">Total Tagihan</h4>
                             <div style="text-align:right;">
-                                <h4>{{$invoice}}</h4>
                                 <h2 style="font-weight:bold;" id="invoice">0</h4>
                             </div>
                         </div>
@@ -144,7 +141,6 @@
                             <th>Product Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
-                            <th>Discount</th>
                             <th>Total</th>
                             <th>Actions</th>
                         </thead>
@@ -230,7 +226,6 @@
                     <div class="modal-body">
                         <div class="row" style="margin-left:100px;margin-right:100px;">
                             <h5 style="margin-right:5px;">Invoice</h5>
-                            <h5 style="font-weight:bold;">{{$invoice}}</h5>
                         </div>
                         <div style="box-shadow: 3px 4px 21px 2px rgba(220,220,220,1);margin-left:50px;margin-right:50px;padding:10px;" class="print">
                             <div style="font-family:Merchant-Copy">
@@ -242,7 +237,6 @@
                                     <p style="margin-top:-5px;margin-bottom:0px;margin-left:-5px;">=============================================</p>
                                 </div>
                                 <div style="text-align:left;font-size:20px;margin-left:10px;margin-right:10px;">
-                                    <p style="display:inline;margin-bottom:0px;">ID : {{$invoice}}</p>
                                     <p style="float:right;margin-bottom:0px;margin-right:5px;">{{$now." ".$time}}</p>
                                     <p style="margin-bottom:0px;">=============================================</p>
                                 </div>
@@ -305,11 +299,11 @@
                 if (table_content.length > 1){
                     var total_temp = 0;
                     $(table_content).each(function(i){
-                        total_temp += +$(this).children("td").eq(6).text();
+                        total_temp += +$(this).children("td").eq(5).text();
                     });
                     total = total_temp;
                 } else {
-                    total = +$(table_content).eq(0).children("td").eq(6).text();
+                    total = +$(table_content).eq(0).children("td").eq(5).text();
                 }
                 $("#invoice").text(rupiahFormat(total));
                 $("#subtotal").val(total);
@@ -357,15 +351,13 @@
                 var name = $(product).eq(2).text();
                 var price = $(product).eq(3).text();
                 var qty = $(product).eq(4).text();
-                var discount = $(product).eq(5).text();
-                var total = $(product).eq(6).text();
+                var total = $(product).eq(5).text();
                 var modalProduct = $('#editModal').find(".modal-body");
                 var modalValue = $(modalProduct).children("input");
                 $(modalValue).eq(0).val(barcode);
                 $(modalValue).eq(1).val(name);
                 $(modalValue).eq(2).val(price);
                 $(modalValue).eq(3).val(qty);
-                $(modalValue).eq(4).val(discount);
                 $(modalValue).eq(5).val(total);
             });
             $("#qtyEditModal").on("keyup",function(){
@@ -382,7 +374,7 @@
                     var tbarcode = $(this).children("td").eq(1);
                     if ($(tbarcode).text() == barcode){
                         $(this).children("td").eq(4).text(quantity);
-                        $(this).children("td").eq(6).text(total);
+                        $(this).children("td").eq(5).text(total);
                         return false;
                     }
                 });
@@ -409,7 +401,6 @@
                     method : "post",
                     data : {
                         "_token" : "{{csrf_token()}}",
-                        "invoice" : "{{$invoice}}",
                         "name" : name_arr,
                         "quantity" : qty_arr,
                         "price" : price_arr,
@@ -437,7 +428,7 @@
                 var qty = 0;
                 var discount = 0;
                 $("#product-value").children("tr").each(function(i){
-                    content += `<div class="row"><div style="width:175px;"><p>`+$(this).children("td").eq(2).text()+`</p></div><div style="width:30px;margin-left:0px;px;margin-right:5px;text-align:right;"><p>`+ $(this).children("td").eq(4).text() +`</p></div><div style="width:107px;text-align:right;"><p>`+`Rp. `+rupiahFormat(+$(this).children("td").eq(6).text())+`</p></div></div>`;
+                    content += `<div class="row"><div style="width:175px;"><p>`+$(this).children("td").eq(2).text()+`</p></div><div style="width:30px;margin-left:0px;px;margin-right:5px;text-align:right;"><p>`+ $(this).children("td").eq(4).text() +`</p></div><div style="width:107px;text-align:right;"><p>`+`Rp. `+rupiahFormat(+$(this).children("td").eq(5).text())+`</p></div></div>`;
                     discount += +$(this).children("td").eq(5).text();
                     qty += +$(this).children("td").eq(4).text();
                 });
@@ -479,15 +470,18 @@
                                     }
                                 });
                                 if (typeof product_index == "undefined"){
-                                    $('#listproduct').append(`<tr><td>`+index+`</td><td>`+value.barcode+`</td><td>`+value.name+`</td><td>`+value.selling_price+`</td><td>`+qty.val()+`</td><td>`+value.discount+`</td><td>`+(value.selling_price * qty.val() - value.discount)+`</td><td><a href="javascript:void(0)" class="editProductModal" data-toggle="modal" data-target="#editModal"><i class="material-icons" style="margin-right:5px;">edit</i></a><a class="deleteProduct" href="javascript:void(0)"><i class="material-icons" style="color:red;margin-left:5px;">delete</i></a></td></tr>`);
+                                    console.log('tset1');
+                                    $('#listproduct').append(`<tr><td>`+index+`</td><td>`+value.barcode+`</td><td>`+value.name+`</td><td>`+value.selling_price+`</td><td>`+qty.val()+`</td><td>`+(value.selling_price * qty.val())+`</td><td><a href="javascript:void(0)" class="editProductModal" data-toggle="modal" data-target="#editModal"><i class="material-icons" style="margin-right:5px;">edit</i></a><a class="deleteProduct" href="javascript:void(0)"><i class="material-icons" style="color:red;margin-left:5px;">delete</i></a></td></tr>`);
                                 } else {
+                                    console.log('test2')
                                     $(content).eq(product_index).children('td').eq(4).text(+$(content).eq(product_index).children('td').eq(4).text() + +$(qty).val());
-                                    $(content).eq(product_index).children("td").eq(6).text(
+                                    $(content).eq(product_index).children("td").eq(5).text(
                                         +$(content).eq(product_index).children("td").eq(3).text() * +$(content).eq(product_index).children("td").eq(4).text()
                                     );
                                 }
                             } else{
-                                $('#listproduct').append(`<tr><td>`+index+`</td><td>`+value.barcode+`</td><td>`+value.name+`</td><td>`+value.selling_price+`</td><td>`+qty.val()+`</td><td>`+value.discount+`</td><td>`+(value.selling_price * qty.val() - value.discount)+`</td><td><a href="javascript:void(0)" class="editProductModal" data-toggle="modal" data-target="#editModal"><i class="material-icons" style="margin-right:5px;">edit</i></a><a class="deleteProduct" href="javascript:void(0)"><i class="material-icons" style="color:red;margin-left:5px;">delete</i></a></td></tr>`);
+                                console.log('test3')
+                                $('#listproduct').append(`<tr><td>`+index+`</td><td>`+value.barcode+`</td><td>`+value.name+`</td><td>`+value.selling_price+`</td><td>`+qty.val()+`</td><td>`+(value.selling_price * qty.val())+`</td><td><a href="javascript:void(0)" class="editProductModal" data-toggle="modal" data-target="#editModal"><i class="material-icons" style="margin-right:5px;">edit</i></a><a class="deleteProduct" href="javascript:void(0)"><i class="material-icons" style="color:red;margin-left:5px;">delete</i></a></td></tr>`);
                             }
                         });
                     }

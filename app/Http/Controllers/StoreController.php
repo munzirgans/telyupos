@@ -5,39 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Store;
 use File;
+use GuzzleHttp\Client;
 
 class StoreController extends Controller
 {
+    private $client;
+    private $apiURL;
+    public function __construct(){
+        $this->client = new Client();
+        $this->apiURL = env("API_URL")."/toko";
+    }
     public function index(){
-        $store = Store::first();
-        return view('master/store/index',['store' => $store]);
+        $response = json_decode($this->client->get($this->apiURL)->getBody()->getContents());
+        return view('master/store/index',['store' => $response]);
     }
     public function edit(){
-        $store = Store::first();
-        return view('master/store/edit',['store' => $store]);
+        $response = json_decode($this->client->get($this->apiURL)->getBody()->getContents());
+        return view('master/store/edit',['store' => $response]);
     }
     public function update(Request $req){
-        $store = Store::first();
-        if ($req->hasfile('photo')){
-            $file_photo = $req->file('photo');
-            File::delete('img/'.$store->photo);
-            $file_photo->move("img",$file_photo->getClientOriginalName());
-            $store->name = $req->input('name');
-            $store->phone = $req->input('phone');
-            $store->address = $req->input('address');
-            $store->postal_code = $req->input('postal_code');
-            $store->description = $req->input('description');
-            $store->photo = $file_photo->getClientOriginalName();
-            $store->save();
-            return redirect()->route('store.index');
-        } else{
-            $store->name = $req->input('name');
-            $store->phone = $req->input('phone');
-            $store->address = $req->input('address');
-            $store->postal_code = $req->input('postal_code');
-            $store->description = $req->input('description');
-            $store->save();
-            return redirect()->route('store.index');
-        }
+        $this->client->put($this->apiURL, ['json' => $req->all()]);
+        return redirect()->route('store.index');
     }
 }
